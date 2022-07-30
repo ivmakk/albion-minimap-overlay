@@ -530,7 +530,15 @@ class Overlay():
                                     elif node["nodetype"] == "low":
                                         color = "yellow"
                                         radius = 1
-                            self.create_circle(configuration.display['width'] - 340 * configuration.display['scale_factor'] + (node["x"] + 1000 * configuration.display['scale_factor']) * 0.172, configuration.display['height'] - 250 * configuration.display['scale_factor'] + (-node["y"] + 1000 * configuration.display['scale_factor']) * 0.115, radius, color, self.canvas)
+
+                            scale_factor = configuration.display['scale_factor'] or 1
+                            bottom_right_offset_x = 340
+                            bottom_right_offset_y = 250
+                            x = configuration.display['width'] - bottom_right_offset_x * scale_factor + (node["x"] + 1000) * 0.172 * scale_factor
+                            y = configuration.display['height'] - bottom_right_offset_y * scale_factor + (-node["y"] + 1000) * 0.115 * scale_factor
+                            radius = radius * scale_factor
+
+                            self.create_circle(x, y, radius, color, self.canvas)
                     else:
                         logging.warning("No filtered map data yet!")
                 else:
