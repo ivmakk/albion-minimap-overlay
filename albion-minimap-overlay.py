@@ -255,7 +255,13 @@ class ImageProcessor():
             region_logo_width, region_logo_height = region_logo.shape[::-1]
             match = cv2.matchTemplate(image, region_logo, cv2.TM_CCOEFF)
             min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(match)
-            image_cropped = image[0:24, 0:max_loc[0]]
+
+            scale_factor = configuration.display['scale_factor'] or 1
+            height = round(24 * scale_factor)
+            width = round(max_loc[0] * scale_factor)
+
+            image_cropped = image[0:height, 0:width]
+
             if image_cropped.size:
                 cv2.imwrite(str(output_file_path), image_cropped)
         except Exception as e:
